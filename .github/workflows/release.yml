@@ -1,0 +1,59 @@
+name: Release macOS DMG
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build macOS DMG
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-apple-darwin, aarch64-apple-darwin
+
+      - name: Install cargo-bundle
+        run: cargo install cargo-bundle
+
+      - name: Build macOS App Bundle
+        run: cargo bundle --release --format osx
+
+      - name: Build Universal Binary
+        run: |
+          cargo build --release --target x86_64-apple-darwin
+          cargo build --release --target aarch64-apple-darwin
+          lipo -create -output target/release/macdevclean \
+            target/x86_64-apple-darwin/release/macdevclean \
+            target/aarch64-apple-darwin/release/macdevclean
+          # Inject the universal binary into the app bundle
+          cp target/release/macdevclean target/release/bundle/osx/MacDevClean.app/Contents/MacOS/MacDevClean
+
+      - name: Create DMG
+        run: |
+          # Package the .app into a .dmg using hdiutil
+          hdiutil create -volname "MacDevClean" -srcfolder target/release/bundle/osx/MacDevClean.app -ov -format UDZO MacDevClean.dmg
+
+      - name: Compress CLI Binary
+        run: |
+          cd target/release
+          tar -czvf macdevclean-cli-macos-universal.tar.gz macdevclean
+          mv macdevclean-cli-macos-universal.tar.gz ../../
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            MacDevClean.dmg
+            macdevclean-cli-macos-universal.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
