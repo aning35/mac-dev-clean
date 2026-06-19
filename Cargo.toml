@@ -12,6 +12,7 @@ dialoguer = "0.12.0"
 dirs = "6.0.0"
 eframe = "0.34.3"
 egui = "0.34.3"
+image = "0.25.10"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.150"
 serde_yaml = "0.9.34"
@@ -26,14 +27,5 @@ copyright = "Copyright (c) aning35"
 short_description = "The safest cache cleaner for macOS developers."
 long_description = "MacDevClean safely cleans development caches (npm, Docker, Python, etc.) with a strict trash-first policy."
 icon = [
-    "docs/logo_16.png",
-    "docs/logo_16@2x.png",
-    "docs/logo_32.png",
-    "docs/logo_32@2x.png",
-    "docs/logo_128.png",
-    "docs/logo_128@2x.png",
-    "docs/logo_256.png",
-    "docs/logo_256@2x.png",
-    "docs/logo_512.png",
-    "docs/logo_512@2x.png"
+    "docs/logo_512.png"
 ]

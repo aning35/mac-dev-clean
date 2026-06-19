@@ -437,10 +437,23 @@ impl eframe::App for MacDevCleanApp {
 }
 
 pub fn start_gui(config: Config, scanners: Arc<Vec<Box<dyn Scanner + Send + Sync>>>) {
+    let icon_data = if let Ok(image) = image::load_from_memory(include_bytes!("../docs/logo_512.png")) {
+        let rgba = image.into_rgba8();
+        let (width, height) = rgba.dimensions();
+        egui::IconData {
+            rgba: rgba.into_raw(),
+            width,
+            height,
+        }
+    } else {
+        egui::IconData::default()
+    };
+
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_inner_size([1000.0, 700.0])
-            .with_min_inner_size([600.0, 400.0]),
+            .with_min_inner_size([600.0, 400.0])
+            .with_icon(icon_data),
         ..Default::default()
     };
 

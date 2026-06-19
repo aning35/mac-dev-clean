@@ -28,6 +28,15 @@ jobs:
       - name: Build macOS App Bundle
         run: cargo bundle --release --format osx
 
+      - name: Fix App Bundle Metadata
+        run: |
+          # Rename the executable to Title Case to match macOS standards
+          mv target/release/bundle/osx/MacDevClean.app/Contents/MacOS/macdevclean target/release/bundle/osx/MacDevClean.app/Contents/MacOS/MacDevClean
+          # Update Info.plist to match the new executable name
+          plutil -replace CFBundleExecutable -string "MacDevClean" target/release/bundle/osx/MacDevClean.app/Contents/Info.plist
+          # Add CFBundleIconName to ensure Dock icon shows up correctly on modern macOS
+          plutil -replace CFBundleIconName -string "MacDevClean" target/release/bundle/osx/MacDevClean.app/Contents/Info.plist
+
       - name: Build Universal Binary
         run: |
           cargo build --release --target x86_64-apple-darwin
