@@ -27,7 +27,9 @@ fn main() {
         Box::new(scanner::ai_ide::AiIdeScanner),
     ];
 
-    match &cli.command {
+    let command = cli.command.unwrap_or(Commands::Ui);
+
+    match &command {
         Commands::Scan { json } => {
             println!("{}", "Scanning system for development caches...".cyan().bold());
             let mut all_results = Vec::new();

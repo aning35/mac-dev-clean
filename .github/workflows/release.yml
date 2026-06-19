@@ -40,8 +40,14 @@ jobs:
 
       - name: Create DMG
         run: |
-          # Package the .app into a .dmg using hdiutil
-          hdiutil create -volname "MacDevClean" -srcfolder target/release/bundle/osx/MacDevClean.app -ov -format UDZO MacDevClean.dmg
+          # Create a staging directory for the DMG contents
+          mkdir -p dmg_staging
+          # Copy the compiled .app into the staging directory
+          cp -r target/release/bundle/osx/MacDevClean.app dmg_staging/
+          # Create a symbolic link to the macOS Applications folder
+          ln -s /Applications dmg_staging/Applications
+          # Package the staging directory into a .dmg using hdiutil
+          hdiutil create -volname "MacDevClean" -srcfolder dmg_staging -ov -format UDZO MacDevClean.dmg
 
       - name: Compress CLI Binary
         run: |
