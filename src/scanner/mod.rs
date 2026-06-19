@@ -6,6 +6,7 @@ pub mod pkgmgr;
 pub mod ide;
 pub mod chat;
 pub mod downloads;
+pub mod ai_ide;
 
 use serde::Serialize;
 use std::path::PathBuf;

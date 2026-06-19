@@ -24,6 +24,7 @@ fn main() {
         Box::new(scanner::ide::IdeScanner),
         Box::new(scanner::chat::ChatScanner),
         Box::new(scanner::downloads::DownloadsScanner),
+        Box::new(scanner::ai_ide::AiIdeScanner),
     ];
 
     match &cli.command {
@@ -149,6 +150,7 @@ fn main() {
                 Box::new(scanner::ide::IdeScanner),
                 Box::new(scanner::chat::ChatScanner),
                 Box::new(scanner::downloads::DownloadsScanner),
+                Box::new(scanner::ai_ide::AiIdeScanner),
             ]);
             
             gui::start_gui(config, arc_scanners);
