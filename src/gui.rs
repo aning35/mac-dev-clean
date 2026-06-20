@@ -457,11 +457,13 @@ pub fn start_gui(config: Config, scanners: Arc<Vec<Box<dyn Scanner + Send + Sync
         ..Default::default()
     };
 
-    eframe::run_native(
+    if let Err(e) = eframe::run_native(
         "MacDevClean",
         options,
         Box::new(|cc| Ok(Box::new(MacDevCleanApp::new(cc, config, scanners)))),
-    ).unwrap();
+    ) {
+        eprintln!("eframe error: {:?}", e);
+    }
 }
 
 fn reveal_in_finder(path: &std::path::Path) {
