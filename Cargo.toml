@@ -1,6 +1,6 @@
 [package]
 name = "macdevclean"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 
 [dependencies]
@@ -22,7 +22,7 @@ walkdir = "2.5.0"
 [package.metadata.bundle]
 name = "MacDevClean"
 identifier = "com.aning35.macdevclean"
-version = "0.1.0"
+version = "0.1.1"
 copyright = "Copyright (c) aning35"
 short_description = "The safest cache cleaner for macOS developers."
 long_description = "MacDevClean safely cleans development caches (npm, Docker, Python, etc.) with a strict trash-first policy."
